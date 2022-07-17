@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="./src/index.js"></script>
+    <link rel="stylesheet" href="./src/style/index.css">
+    <title>Fuzzysort Plain Custom Element</title>
+</head>
+<body>
+  <main>
+    <fuzzy-sort data-fuzzy-sort-hidden-class="hidden">
+        <label for="filter">Filter</label>
+        <input type="text" id="filter" placeholder="filter some items" />
+        
+        <span data-target="debug"></span>
+    </fuzzy-sort>
+    <ul class="items">
+
+        <li id="item-0" class="item" data-fuzzy-sort="">
+            <details>
+                <summary class="item-title-row">
+                    <span class="title" data-fuzzy-sort-key="title">Strawberrydream Smoothie</span>
+                    <span class="" data-fuzzy-sort-match></span>
+                    <div>
+                        <span class="details-indicator-closed">+</span>
+                        <span class="details-indicator-open">-</span>
+                    </div>
+                </summary>
+                <div class="content details-content">
+                    <label for="item-0-name">Name</label>
+                    <input id="item-0-name" class="item-name" value="Strawberrydream Smoothie" readonly=""/>
+                    <label for="item-0-ingredients">Zutaten</label>
+                    <input id="item-0-ingredients" data-fuzzy-sort-key="ingredients" value="Erdbeersaft, Apfelsaft, Kirschsaft" readonly=""/>
+                </div>
+            </details>
+        </li>
+
+        <li id="item-1" class="item" data-fuzzy-sort="">
+            <div class="item-title-row">
+                <span class="title" data-fuzzy-sort-key="title">Strawberrydream Smoothie</span>
+                <span class="" data-fuzzy-sort-match></span>
+            </div>
+            <div class="content">
+                <label for="item-1-name">Name</label>
+                <input id="item-1-name" class="item-name" value="Strawberrydream Smoothie" readonly=""/>
+                <label for="item-1-ingredients">Zutaten</label>
+                <input id="item-1-ingredients" data-fuzzy-sort-key="ingredients" value="Erdbeersaft, Apfelsaft, Kirschsaft" readonly=""/>
+            </div>
+        </li>
+        <li id="item-2" class="item" data-fuzzy-sort="">
+          <div class="item-title-row">
+              <span class="title" data-fuzzy-sort-key="title">Apfeldirektsaft 100%</span>
+              <span class="" data-fuzzy-sort-match></span>
+          </div>
+          <div class="content">
+              <label for="item-2-name">Name</label>
+              <input id="item-2-name" class="item-name" value="Apfeldirektsaft 100%" readonly=""/>
+              <label for="item-2-ingredients">Zutaten</label>
+              <input id="item-2-ingredients" data-fuzzy-sort-key="ingredients" value="Apfelsaft" readonly=""/>
+          </div>
+      </li>
+      <li id="item-3" class="item" data-fuzzy-sort="">
+        <div class="item-title-row">
+            <span class="title" data-fuzzy-sort-key="title">Galactic Fruit Soup Smoothie</span>
+            <span class="" data-fuzzy-sort-match></span>
+        </div>
+        <div class="content">
+            <label for="item-3-name">Name</label>
+            <input id="item-3-name" class="item-name" value="Galactic Fruit Soup Smoothie" readonly=""/>
+            <label for="item-3-ingredients">Zutaten</label>
+            <input id="item-3-ingredients" data-fuzzy-sort-key="ingredients" value="Kirschsaft, Cranberrysaft, Heidelbeermuß, Holunderblüten" readonly=""/>
+        </div>
+      </li>
+      <li id="item-4" class="item" data-fuzzy-sort="">
+        <div class="item-title-row">
+            <span class="title" data-fuzzy-sort-key="title">Cranberrysaft</span>
+            <span class="" data-fuzzy-sort-match></span>
+        </div>
+        <div class="content">
+            <label for="item-4-name">Name</label>
+            <input id="item-4-name" class="item-name" value="Cranberrysaft" readonly=""/>
+            <label for="item-4-ingredients">Zutaten</label>
+            <input id="item-4-ingredients" data-fuzzy-sort-key="ingredients" value="Cranberrydirektsaft" readonly=""/>
+        </div>
+      </li>
+      <li id="item-5" class="item" data-fuzzy-sort="">
+        <div class="item-title-row">
+            <span class="title" data-fuzzy-sort-key="title">Grapefruit Sour</span>
+            <span class="" data-fuzzy-sort-match></span>
+        </div>
+        <div class="content">
+            <label for="item-5-name">Name</label>
+            <input id="item-5-name" class="item-name" value="Grapefruit Sour Bomb" readonly=""/>
+            <label for="item-5-ingredients">Zutaten</label>
+            <input id="item-5-ingredients" data-fuzzy-sort-key="ingredients" value="Grapefruitsaft, Zitronensaft, Limettensaft, Sanddorn" readonly=""/>
+        </div>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "fuzzysort-hotwired-stimulus",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.0.1",
+    "fuzzysort": "^2.0.1",
+    "lodash.debounce": "^4.0.8"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vite": "^2.9.14"
+  }
+}

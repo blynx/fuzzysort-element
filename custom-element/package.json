@@ -1,0 +1,16 @@
+{
+  "name": "fuzzysort-custom-element",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fuse.js": "^6.6.2",
+    "fuzzysort": "^2.0.1",
+    "lodash.debounce": "^4.0.8"
+  }
+}
