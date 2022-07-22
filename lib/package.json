@@ -1,0 +1,11 @@
+{
+  "name": "lib",
+  "version": "0.0.99",
+  "description": "Just a lib",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

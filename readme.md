@@ -1,5 +1,15 @@
 # Fuzzy Sort Elements based on [fuzzysort](https://github.com/farzher/fuzzysort) lib
 
+<!-- TOC -->
+- [GitHub Catalyst](#github-catalyst)
+- [Plain Custom Element](#plain-custom-element)
+    - [Fuse.js](#fusejs)
+- [Wicked Elements](#wicked-elements)
+- [Hotwired Stimulus](#hotwired-stimulus)
+- [Stencil.js](#stenciljs)
+- [Svelte](#svelte)
+<!-- /TOC -->
+
 Comparison between different approaches to build a fuzzy filtering and sorting component based on the [fuzzysort library](https://github.com/farzher/fuzzysort).
 
 Alternative: https://fusejs.io/
@@ -19,6 +29,12 @@ Same principle as with Catalyst, just a plain JS Custom Element, no Typescript.
 ### Fuse.js
 
 Another test with fuse.js here. Though it does not provide `highlight()`: Not quite clear why and how certain phrases match.
+
+## Wicked Elements
+
+https://github.com/WebReflection/wicked-elements
+
+TBD
 
 ## Hotwired Stimulus
 

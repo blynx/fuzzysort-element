@@ -1,0 +1,7 @@
+packages:
+  - "lib"
+  # - "custom-element"
+  # - "github-catalyst"
+  # - "hotwired-stimulus"
+  # - stencil
+  # - wicked elements
