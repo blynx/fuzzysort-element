@@ -1,10 +1,11 @@
 import fuzzysort from "fuzzysort"
 // import debounce from "lodash.debounce"
 
+const TARGET_ATTR = "data-fuzzy-sort"
+const TARGET_SELECTOR = "[data-fuzzy-sort]"
 const ATTR_PREFIX = "data-fuzzy-sort-"
 const SUBTARGET_KEY_ATTR = "data-fuzzy-sort-key"
 const SUBTARGET_SELECTOR = "[data-fuzzy-sort-key]"
-const TARGET_KEYS_ATTR = "data-fuzzy-sort-keys"
 const MATCHDISPLAY_SELECTOR = "[data-fuzzy-sort-match]"
 
 export default class FuzzySortElement extends HTMLElement {
@@ -17,8 +18,9 @@ export default class FuzzySortElement extends HTMLElement {
         this._inputElement = this.querySelector("input")
         this._hiddenClass = this.getAttribute("data-fuzzy-sort-hidden-class")
         
-        let namespace = this.getAttribute("data-fuzzy-sort-select") 
-        let targetsSelector = namespace ? `[data-fuzzy-sort=${namespace}]` : "[data-fuzzy-sort]"
+        // ability to use custom selector
+        let customTargetsSelector = this.getAttribute("data-fuzzy-sort-select") 
+        let targetsSelector = customTargetsSelector || TARGET_SELECTOR
 
         if (targetsSelector && this._inputElement) {
             this.buildTargets(Array.from(document.querySelectorAll(targetsSelector)))
@@ -54,15 +56,15 @@ export default class FuzzySortElement extends HTMLElement {
         for (let targetElement of this.targetElements) {
             let targetStructure = { __ref: targetElement.element }
             // generate fuzzysearch targetStructure from data- attributes
-            // given [data-fuzzy-sort-keys]
-            let keysAttributeValue = targetElement.element.getAttribute(TARGET_KEYS_ATTR)
-            if (keysAttributeValue) {
-                let dataKeys = keysAttributeValue.split(",").map(key => key.trim())
+            // given data-fuzzy-sort="key1, key2, ..." -> data-fuzzy-sort-key1="value..."
+            let directKeys = targetElement.element.getAttribute(TARGET_ATTR)
+            if (directKeys) {
+                let dataKeys = directKeys.split(",").map(key => key.trim())
                 for (let key of dataKeys) {
                     targetStructure[key] = targetElement.element.getAttribute(ATTR_PREFIX + key)
                 }
             }
-            // generate fuzzysearch targetStructure from visible child elements
+            // generate fuzzysearch targetStructure from targets child elements contents
             let subTargetElements = targetElement.element.querySelectorAll(SUBTARGET_SELECTOR)
             for (let subTargetElement of subTargetElements) {
                 let key = subTargetElement.getAttribute(SUBTARGET_KEY_ATTR) || "key"
