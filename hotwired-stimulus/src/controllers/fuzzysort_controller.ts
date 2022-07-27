@@ -8,7 +8,7 @@ import {
     OPTION,
     buildTargets,
     go,
-} from "../../../shared"
+} from "lib/shared"
 
 const SUBTARGET_KEY_ATTR = "data-fuzzysort-key"
 const SUBTARGET_SELECTOR = "[data-fuzzysort-key]"

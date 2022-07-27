@@ -8,7 +8,7 @@ import {
     FuzzySortTargets,
     buildTargets,
     go,
-} from "lib"
+} from "lib/shared"
 
 @controller
 export default class FuzzySortElement extends HTMLElement implements FuzzysortComponentContext {
