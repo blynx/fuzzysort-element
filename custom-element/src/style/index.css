@@ -70,3 +70,8 @@ details:not([open]) .details-indicator-open,
 details[open] .details-indicator-closed {
     display: none;
 }
+
+[data-fuzzy-sort-match] {
+    padding: 0 1rem;
+    color: red;
+}

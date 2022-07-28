@@ -1,7 +1,7 @@
 {
   "name": "fuzzysort-custom-element",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.2",
+  "description": "Custom Element using fuzzysort lib",
   "scripts": {
     "dev": "vite"
   },

@@ -4,8 +4,9 @@ import fuzzysort from "fuzzysort"
 const TARGET_ATTR = "data-fuzzy-sort"
 const TARGET_SELECTOR = "[data-fuzzy-sort]"
 const ATTR_PREFIX = "data-fuzzy-sort-"
-const SUBTARGET_KEY_ATTR = "data-fuzzy-sort-key"
 const SUBTARGET_SELECTOR = "[data-fuzzy-sort-key]"
+const SUBTARGET_KEY_ATTR = "data-fuzzy-sort-key"
+const SUBTARGET_VALUE_ATTR = "data-fuzzy-sort-value"
 const MATCHDISPLAY_SELECTOR = "[data-fuzzy-sort-match]"
 
 export default class FuzzySortElement extends HTMLElement {
@@ -68,7 +69,8 @@ export default class FuzzySortElement extends HTMLElement {
             let subTargetElements = targetElement.element.querySelectorAll(SUBTARGET_SELECTOR)
             for (let subTargetElement of subTargetElements) {
                 let key = subTargetElement.getAttribute(SUBTARGET_KEY_ATTR) || "key"
-                targetStructure[key] = subTargetElement.value || subTargetElement.textContent
+                let valueFromAttribute = subTargetElement.getAttribute(SUBTARGET_VALUE_ATTR)
+                targetStructure[key] = valueFromAttribute || subTargetElement.value || subTargetElement.textContent
                 this._fuzzySortTargetsKeys.add(key)
             }
             this._fuzzySortTargets.push(targetStructure)
