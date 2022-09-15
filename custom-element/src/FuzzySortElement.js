@@ -1,13 +1,13 @@
 import fuzzysort from "fuzzysort"
-// import debounce from "lodash.debounce"
+import debounce from "lodash.debounce"
 
-const TARGET_ATTR = "data-fuzzy-sort"
-const TARGET_SELECTOR = "[data-fuzzy-sort]"
-const ATTR_PREFIX = "data-fuzzy-sort-"
-const SUBTARGET_SELECTOR = "[data-fuzzy-sort-key]"
-const SUBTARGET_KEY_ATTR = "data-fuzzy-sort-key"
-const SUBTARGET_VALUE_ATTR = "data-fuzzy-sort-value"
+const TARGET_VALUE_ATTR = "data-fuzzy-sort-value"
+const TARGET_KEY_ATTR = "data-fuzzy-sort-key"
+const TARGET_KEYS_ATTR = "data-fuzzy-sort-keys"
+const TARGET_ATTR_PREFIX = "data-fuzzy-sort-"
+const TARGET_SELECTOR = "[data-fuzzy-sort-key]"
 const MATCHDISPLAY_SELECTOR = "[data-fuzzy-sort-match]"
+const FALLBACK_KEY = "__KEY__"
 
 export default class FuzzySortElement extends HTMLElement {
 
@@ -17,16 +17,16 @@ export default class FuzzySortElement extends HTMLElement {
         this._fuzzySortTargetsKeys = new Set()
         this._fuzzySortResults = null
         this._inputElement = this.querySelector("input")
-        this._hiddenClass = this.getAttribute("data-fuzzy-sort-hidden-class")
+        this._hiddenClass = this.getAttribute("hidden-class")
+        this._treeRoot = document.querySelector(this.getAttribute("tree"))
         
         // ability to use custom selector
-        let customTargetsSelector = this.getAttribute("data-fuzzy-sort-select") 
-        let targetsSelector = customTargetsSelector || TARGET_SELECTOR
+        let targetsSelector = this.getAttribute("select-targets")
 
         if (targetsSelector && this._inputElement) {
             this.buildTargets(Array.from(document.querySelectorAll(targetsSelector)))
             this.go()
-            this._inputElement.addEventListener("input", this.go.bind(this))
+            this._inputElement.addEventListener("input", debounce(this.go.bind(this), 320))
         }
     }
 
@@ -50,39 +50,67 @@ export default class FuzzySortElement extends HTMLElement {
     }
 
     buildTargets(elements) {
-        this.targetElements = elements.map(element => ({
+        this._targetElements = elements.map(element => ({
             element,
             matchDisplay: element.querySelector(MATCHDISPLAY_SELECTOR)
         }))
-        for (let targetElement of this.targetElements) {
-            let targetStructure = { __ref: targetElement.element }
-            // generate fuzzysearch targetStructure from data- attributes
-            // given data-fuzzy-sort="key1, key2, ..." -> data-fuzzy-sort-key1="value..."
-            let directKeys = targetElement.element.getAttribute(TARGET_ATTR)
+
+        for (let targetElement of this._targetElements) {
+            let targetStructure = { 
+                __ref: targetElement.element, 
+                __parents: [],
+            }
+
+            // given tree, prepare parents which are targets
+            if (this._treeRoot instanceof HTMLElement) {
+                let node = targetElement.element.parentNode
+                while (node != this._treeRoot) {
+                    if (elements.includes(node)) targetStructure.__parents.push(node)
+                    node = node.parentNode
+                }
+            }
+
+            // given direct target with data-fuzzy-sort-key and/or data-fuzzy-sort-value="..."
+            let directValue = targetElement.element.getAttribute(TARGET_VALUE_ATTR)
+            let directKey = targetElement.element.getAttribute(TARGET_KEY_ATTR)
+            if (directValue || directKey) {
+                let key = directKey || FALLBACK_KEY
+                let valueFromAttribute = targetElement.element.getAttribute(TARGET_VALUE_ATTR)
+                targetStructure[key] = valueFromAttribute || targetElement.element.value || targetElement.element.textContent
+                this._fuzzySortTargetsKeys.add(key)
+            }
+
+            // given direct target with data-fuzzy-sort-keys="key1, key2, ..." and data-fuzzy-sort-key1="value..."
+            let directKeys = targetElement.element.getAttribute(TARGET_KEYS_ATTR)
             if (directKeys) {
                 let dataKeys = directKeys.split(",").map(key => key.trim())
                 for (let key of dataKeys) {
-                    targetStructure[key] = targetElement.element.getAttribute(ATTR_PREFIX + key)
+                    targetStructure[key] = targetElement.element.getAttribute(TARGET_ATTR_PREFIX + key)
+                    this._fuzzySortTargetsKeys.add(key)
                 }
             }
-            // generate fuzzysearch targetStructure from targets child elements contents
-            let subTargetElements = targetElement.element.querySelectorAll(SUBTARGET_SELECTOR)
+
+            // given target with childnodes with [data-fuzzy-sort-key]
+            let subTargetElements = targetElement.element.querySelectorAll(TARGET_SELECTOR)
             for (let subTargetElement of subTargetElements) {
-                let key = subTargetElement.getAttribute(SUBTARGET_KEY_ATTR) || "key"
-                let valueFromAttribute = subTargetElement.getAttribute(SUBTARGET_VALUE_ATTR)
+                let key = subTargetElement.getAttribute(TARGET_KEY_ATTR) || FALLBACK_KEY
+                let valueFromAttribute = subTargetElement.getAttribute(TARGET_VALUE_ATTR)
                 targetStructure[key] = valueFromAttribute || subTargetElement.value || subTargetElement.textContent
                 this._fuzzySortTargetsKeys.add(key)
             }
             this._fuzzySortTargets.push(targetStructure)
         }
+        console.log(this, this._fuzzySortTargets)
     }
     
     setVisibilities() {
         if (this.fuzzySortResults) {
-            this.targetElements.forEach(({element, matchDisplay}) => {
+            let treeElementsToShow = new Set()
+            this._targetElements.forEach(({element, matchDisplay}) => {
                 let match = this.fuzzySortResults.find(it =>  it.obj.__ref == element)
                 if (match) {
                     element.classList.remove(this._hiddenClass)
+                    if (this._treeRoot) match.obj.__parents.forEach(p => treeElementsToShow.add(p))
                     let bestMatch = Array.from(match).sort((a, b) => {
                         if (!a) return 1
                         if (!b) return -1
@@ -100,11 +128,12 @@ export default class FuzzySortElement extends HTMLElement {
                     }
                 }
             })
+            treeElementsToShow.forEach(te => te.classList.remove(this._hiddenClass))
         }
     }
     
     resetVisibilities() {
-        this.targetElements.forEach(({element, matchDisplay}) => {
+        this._targetElements.forEach(({element, matchDisplay}) => {
             element.classList.remove(this._hiddenClass)
             if (matchDisplay) {
                 matchDisplay.classList.add(this._hiddenClass)

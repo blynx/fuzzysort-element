@@ -15,7 +15,7 @@ export default class FuzzySortElement extends HTMLElement {
         this._fuzzySortTargetsKeys = new Set()
         this._fuzzySortResults = null
         this._inputElement = this.querySelector("input")
-        this._hiddenClass = this.getAttribute("data-fuzzy-sort-hidden-class")
+        this._hiddenClass = this.getAttribute("hidden-class")
 
         let namespace = this.getAttribute("select")
         let targetsSelector = namespace ? `[data-fuzzy-sort=${namespace}]` : "[data-fuzzy-sort]"

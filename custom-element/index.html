@@ -10,7 +10,8 @@
 </head>
 <body>
   <main>
-    <fuzzy-sort data-fuzzy-sort-hidden-class="hidden">
+
+    <fuzzy-sort select-targets=".item" hidden-class="hidden">
         <label for="filter">Filter</label>
         <input type="text" id="filter" placeholder="filter some items" />
         
@@ -18,7 +19,7 @@
     </fuzzy-sort>
     <ul class="items">
 
-        <li id="item-0" class="item" data-fuzzy-sort="">
+        <li id="item-0" class="item">
             <details>
                 <summary class="item-title-row">
                     <span class="title"
@@ -40,12 +41,12 @@
         </li>
 
         <li id="item-0" class="item" 
-            data-fuzzy-sort="title, ingredients"
+            data-fuzzy-sort-keys="title, ingredients"
             data-fuzzy-sort-title="Merry Berry Smoothie"
             data-fuzzy-sort-ingredients="Erdbeersaft, Apfelsaft, Kirschsaft">
             <details>
                 <summary class="item-title-row">
-                    <span class="title">Merry Berry Smoothie (from data-fuzzy-sort="key1, key2, ...")</span>
+                    <span class="title">Merry Berry Smoothie (from data-fuzzy-sort-keys="key1, key2, ...")</span>
                     <span class="" data-fuzzy-sort-match></span>
                     <div style="margin-left: auto;">
                         <span class="details-indicator-closed"><b>+</b></span>
@@ -61,7 +62,7 @@
             </details>
         </li>
 
-        <li id="item-1" class="item" data-fuzzy-sort="">
+        <li id="item-1" class="item">
             <div class="item-title-row">
                 <span class="title" data-fuzzy-sort-key="title">Strawberrydream Smoothie</span>
                 <span class="" data-fuzzy-sort-match></span>
@@ -73,7 +74,7 @@
                 <input id="item-1-ingredients" data-fuzzy-sort-key="ingredients" value="Erdbeersaft, Apfelsaft, Kirschsaft" readonly=""/>
             </div>
         </li>
-        <li id="item-2" class="item" data-fuzzy-sort="">
+        <li id="item-2" class="item">
           <div class="item-title-row">
               <span class="title" data-fuzzy-sort-key="title">Apfeldirektsaft 100%</span>
               <span class="" data-fuzzy-sort-match></span>
@@ -85,7 +86,7 @@
               <input id="item-2-ingredients" data-fuzzy-sort-key="ingredients" value="Apfelsaft" readonly=""/>
           </div>
       </li>
-      <li id="item-3" class="item" data-fuzzy-sort="">
+      <li id="item-3" class="item">
         <div class="item-title-row">
             <span class="title" data-fuzzy-sort-key="title">Galactic Fruit Soup Smoothie</span>
             <span class="" data-fuzzy-sort-match></span>
@@ -97,7 +98,7 @@
             <input id="item-3-ingredients" data-fuzzy-sort-key="ingredients" value="Kirschsaft, Cranberrysaft, Heidelbeermuß, Holunderblüten" readonly=""/>
         </div>
       </li>
-      <li id="item-4" class="item" data-fuzzy-sort="">
+      <li id="item-4" class="item">
         <div class="item-title-row">
             <span class="title" data-fuzzy-sort-key="title">Cranberrysaft</span>
             <span class="" data-fuzzy-sort-match></span>
@@ -109,7 +110,7 @@
             <input id="item-4-ingredients" data-fuzzy-sort-key="ingredients" value="Cranberrydirektsaft" readonly=""/>
         </div>
       </li>
-      <li id="item-5" class="item" data-fuzzy-sort="">
+      <li id="item-5" class="item">
         <div class="item-title-row">
             <span class="title" data-fuzzy-sort-key="title">Grapefruit Sour</span>
             <span class="" data-fuzzy-sort-match></span>
@@ -121,6 +122,35 @@
             <input id="item-5-ingredients" data-fuzzy-sort-key="ingredients" value="Grapefruitsaft, Zitronensaft, Limettensaft, Sanddorn" readonly=""/>
         </div>
       </li>
+    </ul>
+
+    <hr>
+
+    <fuzzy-sort select-targets=".tree li" hidden-class="hidden" tree=".tree">
+        <label for="tree-filter">Filter</label>
+        <input type="text" id="tree-filter" placeholder="filter some items" />
+        
+        <span data-target="debug"></span>
+    </fuzzy-sort>
+
+    <ul class="tree">
+        <li data-fuzzy-sort-value="Nuts">Nuts</li>
+        <li data-fuzzy-sort-value="Fruit">Fruit
+            <ul>
+                <li data-fuzzy-sort-value="Banana">Banana</li>
+                <li data-fuzzy-sort-value="Strawberry">Strawberry</li>
+                <li data-fuzzy-sort-value="Citrus">Citrus
+                    <ul>
+                        <li data-fuzzy-sort-value="Orange">Orange</li>
+                        <li data-fuzzy-sort-value="Lemon">Lemon</li>
+                        <li data-fuzzy-sort-value="Grapefruit">Grapefruit</li>
+                    </ul>
+                </li>
+                <li data-fuzzy-sort-value="Apple">Apple</li>
+                <li data-fuzzy-sort-value="Grapes">Grapes</li>
+            </ul>
+        </li>
+        <li data-fuzzy-sort-value="Veggies">Veggies</li>
     </ul>
   </main>
 </body>
