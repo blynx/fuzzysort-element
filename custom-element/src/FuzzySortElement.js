@@ -11,14 +11,15 @@ const FALLBACK_KEY = "__KEY__"
 
 /**
  * FuzzySortElement
- * 
- *  Filter (no sorting, yet) a list of elements
- * 
+ *
+ *  Filter (no sorting, yet) a list of elements.
+ *  Provide the classname which hides elements.
+ *
  *  Usage: "Direct Target"
- * 
+ *
  *  Multiple ways to target elements which has the data directly attached to itself
- * 
- *  <fuzzy-sort select-targets=".direct-target">
+ *
+ *  <fuzzy-sort select-targets=".direct-target" hidden-class="hidden">
  *      <input type="text" />
  *  </fuzzy-sort>
  *  <span class="direct-target">Strawberry</span> <!-- ignored -->
@@ -31,20 +32,20 @@ const FALLBACK_KEY = "__KEY__"
  *      Hazelnut
  *      <span>Content to be ignored</span>
  *  </span>
- *  <span class="direct-target" 
- *        data-fuzzy-sort-keys="nuts, fruit" 
+ *  <span class="direct-target"
+ *        data-fuzzy-sort-keys="nuts, fruit"
  *        data-fuzzy-sort-nuts="Hazelnut Walnut"
  *        data-fuzzy-sort-fruit="Raisin Mango Banana">
  *      Nuts & Dried Fruit Mix
  *      <span>Content to be ignored</span>
  *  </span>
- * 
- * 
+ *
+ *
  *  Usage: "Subtargets"
- * 
+ *
  *  Filter more complex elements where data is taken from children
- * 
- *  <fuzzy-sort select-targets=".complex-target">
+ *
+ *  <fuzzy-sort select-targets=".complex-target" hidden-class="hidden">
  *      <input type="text" />
  *  </fuzzy-sort>
  *  <div class="complex-target">
@@ -55,7 +56,14 @@ const FALLBACK_KEY = "__KEY__"
  *      <p data-fuzzy-sort-key="instructions">...</p>
  *      <input type="text" value="Input Example" data-fuzzy-sort-key="value-from-input" />
  *  </div>
- *  
+ *
+ * Usage: "Tree"
+ *
+ *  Select a tree root to prevent disappearing branches despite matches.
+ *
+ *  <fuzzy-sort select-targets=".node" tree="#root" hidden-class="hidden">
+ *  <ul id="root">
+ *      <li class="node">
  */
 export default class FuzzySortElement extends HTMLElement {
 
@@ -67,7 +75,7 @@ export default class FuzzySortElement extends HTMLElement {
         this._inputElement = this.querySelector("input")
         this._hiddenClass = this.getAttribute("hidden-class")
         this._treeRoot = document.querySelector(this.getAttribute("tree"))
-        
+
         // ability to use custom selector
         let targetsSelector = this.getAttribute("select-targets")
 
@@ -104,8 +112,8 @@ export default class FuzzySortElement extends HTMLElement {
         }))
 
         for (let targetElement of this._targetElements) {
-            let targetStructure = { 
-                __ref: targetElement.element, 
+            let targetStructure = {
+                __ref: targetElement.element,
                 __parents: [],
             }
 
@@ -149,7 +157,7 @@ export default class FuzzySortElement extends HTMLElement {
         }
         console.log(this, this._fuzzySortTargets)
     }
-    
+
     setVisibilities() {
         if (this.fuzzySortResults) {
             let treeElementsToShow = new Set()
@@ -178,7 +186,7 @@ export default class FuzzySortElement extends HTMLElement {
             treeElementsToShow.forEach(te => te.classList.remove(this._hiddenClass))
         }
     }
-    
+
     resetVisibilities() {
         this._targetElements.forEach(({element, matchDisplay}) => {
             element.classList.remove(this._hiddenClass)
