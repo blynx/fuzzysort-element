@@ -9,6 +9,54 @@ const TARGET_SELECTOR = "[data-fuzzy-sort-key]"
 const MATCHDISPLAY_SELECTOR = "[data-fuzzy-sort-match]"
 const FALLBACK_KEY = "__KEY__"
 
+/**
+ * FuzzySortElement
+ * 
+ *  Filter (no sorting, yet) a list of elements
+ * 
+ *  Usage: "Direct Target"
+ * 
+ *  Multiple ways to target elements which has the data directly attached to itself
+ * 
+ *  <fuzzy-sort select-targets=".direct-target">
+ *      <input type="text" />
+ *  </fuzzy-sort>
+ *  <span class="direct-target">Strawberry</span> <!-- ignored -->
+ *  <span class="direct-target" data-fuzzy-sort-key="">Banana</span> <!-- recognized with fallback key-->
+ *  <span class="direct-target" data-fuzzy-sort-value="Orange">
+ *      Orange
+ *      <span>Content to be ignored</span>
+ *  </span>
+ *  <span class="direct-target" data-fuzzy-sort-value="Hazelnut" data-fuzzy-sort-key="Nuts">
+ *      Hazelnut
+ *      <span>Content to be ignored</span>
+ *  </span>
+ *  <span class="direct-target" 
+ *        data-fuzzy-sort-keys="nuts, fruit" 
+ *        data-fuzzy-sort-nuts="Hazelnut Walnut"
+ *        data-fuzzy-sort-fruit="Raisin Mango Banana">
+ *      Nuts & Dried Fruit Mix
+ *      <span>Content to be ignored</span>
+ *  </span>
+ * 
+ * 
+ *  Usage: "Subtargets"
+ * 
+ *  Filter more complex elements where data is taken from children
+ * 
+ *  <fuzzy-sort select-targets=".complex-target">
+ *      <input type="text" />
+ *  </fuzzy-sort>
+ *  <div class="complex-target">
+ *      <h3 data-fuzzy-sort-key="heading">Banana Bread Recipe</h3>
+ *      <ul data-fuzzy-sort-key="ingredients" data-fuzzy-sort-value="...">
+ *          ...
+ *      </ul>
+ *      <p data-fuzzy-sort-key="instructions">...</p>
+ *      <input type="text" value="Input Example" data-fuzzy-sort-key="value-from-input" />
+ *  </div>
+ *  
+ */
 export default class FuzzySortElement extends HTMLElement {
 
     connectedCallback() {
@@ -72,9 +120,8 @@ export default class FuzzySortElement extends HTMLElement {
 
             // given direct target with data-fuzzy-sort-key and/or data-fuzzy-sort-value="..."
             let directValue = targetElement.element.getAttribute(TARGET_VALUE_ATTR)
-            let directKey = targetElement.element.getAttribute(TARGET_KEY_ATTR)
-            if (directValue || directKey) {
-                let key = directKey || FALLBACK_KEY
+            if (directValue || targetElement.element.hasAttribute(TARGET_KEY_ATTR)) {
+                let key = targetElement.element.getAttribute(TARGET_KEY_ATTR) || FALLBACK_KEY
                 let valueFromAttribute = targetElement.element.getAttribute(TARGET_VALUE_ATTR)
                 targetStructure[key] = valueFromAttribute || targetElement.element.value || targetElement.element.textContent
                 this._fuzzySortTargetsKeys.add(key)
