@@ -14,6 +14,12 @@ const FALLBACK_KEY = "__KEY__"
  *
  *  Filter (no sorting, yet) a list of elements.
  *  Provide the classname which hides elements.
+ * 
+ *  Attributes:
+ *      hidden-class:           Choose class to toggle element visibility
+ *      select-targets:         Target Selector
+ *      invert-visibilities:    Switch mode to reveal filtered hidden items
+ *      tree:                   Tree root selector; Retain visibility of branches in tree structure
  *
  *  Usage: "Direct Target"
  *
@@ -74,6 +80,7 @@ export default class FuzzySortElement extends HTMLElement {
         this._fuzzySortResults = null
         this._inputElement = this.querySelector("input")
         this._hiddenClass = this.getAttribute("hidden-class")
+        this._invertVisibilities = this.hasAttribute("invert-visibilities")
         this._treeRoot = document.querySelector(this.getAttribute("tree"))
 
         // ability to use custom selector
@@ -155,7 +162,6 @@ export default class FuzzySortElement extends HTMLElement {
             }
             this._fuzzySortTargets.push(targetStructure)
         }
-        console.log(this, this._fuzzySortTargets)
     }
 
     setVisibilities() {
@@ -189,7 +195,9 @@ export default class FuzzySortElement extends HTMLElement {
 
     resetVisibilities() {
         this._targetElements.forEach(({element, matchDisplay}) => {
-            element.classList.remove(this._hiddenClass)
+            this._invertVisibilities 
+                ? element.classList.add(this._hiddenClass) 
+                : element.classList.remove(this._hiddenClass)
             if (matchDisplay) {
                 matchDisplay.classList.add(this._hiddenClass)
                 matchDisplay.innerHTML = ""

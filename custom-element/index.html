@@ -153,6 +153,27 @@
         </li>
         <li data-fuzzy-sort-value="Veggies">Veggies</li>
     </ul>
+
+    <hr>
+
+    <div>
+        <fuzzy-sort select-targets=".suggestions li" hidden-class="hidden" invert-visibilities>
+            <label for="tree-filter">Filter</label>
+            <input type="text" id="tree-filter" placeholder="filter some items" />
+            
+            <span data-target="debug"></span>
+        </fuzzy-sort>
+        <ul class="suggestions">
+            <li class="hidden" data-fuzzy-sort-key="fruit">Peach</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Banana</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Lemon</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Lime</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Plum</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Grapefruit</li>
+            <li class="hidden" data-fuzzy-sort-key="fruit">Jackfruit</li>
+        </ul>
+    </div>
+
   </main>
 </body>
 </html>
